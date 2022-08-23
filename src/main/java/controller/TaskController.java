@@ -19,7 +19,7 @@ import util.ConnectionFactory;
  */
 public class TaskController {
 
-    public void save(Task task) throws SQLException {
+    public void save(Task task) {
         String sql = "INSERT INTO tasks ("
                 + "idProject, "
                 + "name, "
@@ -46,7 +46,7 @@ public class TaskController {
             statement.setDate(8, new java.sql.Date(task.getUpdatedAt().getTime()));
             statement.execute();
 
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("Erro ao salvar a tarefa" + ex.getMessage(), ex);
         } finally {
             ConnectionFactory.closeConnection(connection, statement);
@@ -88,12 +88,14 @@ public class TaskController {
 
             //Executando a query:
             statement.execute();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("Erro ao atualizar a tarefa " + ex.getMessage(), ex);
+        } finally {
+            ConnectionFactory.closeConnection(connection, statement);
         }
     }
 
-    public void removeById(int taskId) throws SQLException {
+    public void removeById(int taskId) {
 
         String sql = "DELETE FROM tasks WHERE ID = ?";
         Connection connection = null;
@@ -111,7 +113,7 @@ public class TaskController {
 
             //Executando a query:
             statement.execute();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("Erro ao deletar a tarefa " + ex.getMessage(), ex);
         } finally {
             ConnectionFactory.closeConnection(connection, statement);
@@ -125,7 +127,7 @@ public class TaskController {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
-        //Lista de tarefas que será devlvido quando a chamada do método acontecer:
+        //Lista de tarefas que será devolvida quando a chamada do método acontecer:
         List<Task> tasks = new ArrayList<Task>();
 
         try {
@@ -154,7 +156,7 @@ public class TaskController {
 
                 tasks.add(task);
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException("Erro ao inserir a tarefa " + ex.getMessage(), ex);
         } finally {
             ConnectionFactory.closeConnection(connection, statement, resultSet);

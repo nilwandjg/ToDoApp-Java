@@ -18,12 +18,16 @@ public class Project {
     private Date createdAt;
     private Date updatedAt;
 
-    public Project(int id, String name, String description, Date createdAt, Date updateAt) {
+    public Project(int id, String name, String description, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
-        this.updatedAt = updateAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Project() {
+        this.createdAt = new Date();
     }
 
     public int getId() {
@@ -58,12 +62,12 @@ public class Project {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updatedAt = updateAt;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
