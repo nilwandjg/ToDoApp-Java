@@ -12,7 +12,6 @@ import model.Project;
  * @author Nilwan
  */
 public class Main {
-
     public static void main(String[] args) {
 
         ProjectController projectController = new ProjectController();
@@ -23,5 +22,4 @@ public class Main {
         projectController.save(project);
 
     }
-
 }
