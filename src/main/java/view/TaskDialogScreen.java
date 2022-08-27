@@ -16,7 +16,7 @@ import model.Task;
  * @author Nilwan
  */
 public class TaskDialogScreen extends javax.swing.JDialog {
-    
+
     TaskController controller;
     Project project;
 
@@ -26,7 +26,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     public TaskDialogScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         controller = new TaskController();
     }
 
@@ -201,27 +201,32 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private void jLabelToolBarSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelToolBarSaveMouseClicked
         // TODO add your handling code here:
         try {
-            Task task = new Task();
+            if (!jTextFieldName.getText().equals("") && !jFormattedTextFieldDeadline.getText().isEmpty()) {
+                Task task = new Task();
 
-            task.setIdProject(project.getId());
+                task.setIdProject(project.getId());
 
-            task.setName(jTextFieldName.getText());
-            task.setDescription(jTextAreaDescription.getText());
-            task.setNotes(jTextAreaNotes.getText());
-            task.setIsCompleted(false);
-            
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date deadline = null;            
-            deadline = dateFormat.parse(jFormattedTextFieldDeadline.getText());
-            task.setDeadline(deadline);
+                task.setName(jTextFieldName.getText());
+                task.setDescription(jTextAreaDescription.getText());
+                task.setNotes(jTextAreaNotes.getText());
+                task.setIsCompleted(false);
 
-            controller.save(task);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date deadline = null;
+                deadline = dateFormat.parse(jFormattedTextFieldDeadline.getText());
+                task.setDeadline(deadline);
 
-            JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!");
+                controller.save(task);
+
+                JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "A tarefa não foi salva, pois existem campo obrigatórios para preencher.");
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
-        this.dispose();
+
     }//GEN-LAST:event_jLabelToolBarSaveMouseClicked
 
     /**

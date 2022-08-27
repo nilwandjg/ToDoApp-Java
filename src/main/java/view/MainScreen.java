@@ -24,19 +24,19 @@ import util.TaskTableModel;
  * @author Nilwan
  */
 public class MainScreen extends javax.swing.JFrame {
-    
+
     ProjectController projectController;
     TaskController taskController;
-    
+
     DefaultListModel projectsModel;
     TaskTableModel taskModel;
-    
+
     public MainScreen() {
         initComponents();
-        
+
         initDataController();
         initComponentsModel();
-        
+
         decorateTableTask();
     }
 
@@ -332,7 +332,7 @@ public class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
         projectDialogScreen.setVisible(true);
-        
+
         projectDialogScreen.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
                 loadProjects();
@@ -343,13 +343,13 @@ public class MainScreen extends javax.swing.JFrame {
     private void jLabelTasksAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTasksAddMouseClicked
         // TODO add your handling code here:
         TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
-        
+
         int projectIndex = jListProjects.getSelectedIndex();
         Project project = (Project) projectsModel.get(projectIndex);
         taskDialogScreen.setProject(project);
-        
+
         taskDialogScreen.setVisible(true);
-        
+
         taskDialogScreen.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
                 int projectIndex = jListProjects.getSelectedIndex();
@@ -363,19 +363,19 @@ public class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
-        
+
         Task task = taskModel.getTasks().get(rowIndex);
-        
+
         switch (columnIndex) {
             case 3:
                 taskController.update(task);
             case 4:
-                
+
                 break;
             case 5:
                 taskController.removeById(task.getId());
                 taskModel.getTasks().remove(task);
-                
+
                 int projectIndex = jListProjects.getSelectedIndex();
                 Project project = (Project) projectsModel.get(projectIndex);
                 loadTasks(project.getId());
@@ -460,43 +460,43 @@ public class MainScreen extends javax.swing.JFrame {
         jTableTasks.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         jTableTasks.getTableHeader().setBackground(new Color(0, 153, 102));
         jTableTasks.getTableHeader().setForeground(new Color(255, 255, 255));
-        
+
         jTableTasks.getColumnModel().getColumn(2).setCellRenderer(new DeadlineColumnCellRederer());
-        
+
         jTableTasks.getColumnModel().getColumn(4).setCellRenderer(new ButtonColumnCellRederer("edit"));
-jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRederer("delete"));
+        jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRederer("delete"));
 
         //Criando um sort automático para as colunas da table:
         //jTableTasks.setAutoCreateRowSorter(true);
     }
-    
+
     public void initDataController() {
         projectController = new ProjectController();
         taskController = new TaskController();
     }
-    
+
     public void initComponentsModel() {
         projectsModel = new DefaultListModel();
         loadProjects();
-        
+
         taskModel = new TaskTableModel();
         jTableTasks.setModel(taskModel);
-        
+
         if (!projectsModel.isEmpty()) {
             jListProjects.setSelectedIndex(0);
             Project project = (Project) projectsModel.get(0);
             loadTasks(project.getId());
         }
-        
+
     }
-    
+
     public void loadTasks(int idProject) {
         List<Task> tasks = taskController.getAll(idProject);
         taskModel.setTasks(tasks);
-        
+
         showJTableTasks(!tasks.isEmpty());
     }
-    
+
     private void showJTableTasks(boolean hasTasks) {
         if (hasTasks) {
             if (jPanelEmptyList.isVisible()) {
@@ -516,17 +516,17 @@ jTableTasks.getColumnModel().getColumn(5).setCellRenderer(new ButtonColumnCellRe
             jPanelEmptyList.setSize(jPanel5.getWidth(), jPanel5.getHeight());
         }
     }
-    
+
     public void loadProjects() {
         List<Project> projects = projectController.getAll();
-        
+
         projectsModel.clear();
-        
+
         for (int i = 0; i < projects.size(); i++) {
             Project project = projects.get(i);
             projectsModel.addElement(project);
         }
         jListProjects.setModel(projectsModel);
     }
-    
+
 }
